@@ -30,6 +30,7 @@ import com.facebook.react.common.ReactConstants;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.network.ForwardingCookieHandler;
+import com.facebook.react.modules.network.NetworkPatch;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -81,11 +82,11 @@ public class WebSocketModule extends ReactContextBaseJavaModule {
     @Nullable final ReadableArray protocols,
     @Nullable final ReadableMap headers,
     final int id) {
-    OkHttpClient client = new OkHttpClient.Builder()
+    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
       .connectTimeout(10, TimeUnit.SECONDS)
       .writeTimeout(10, TimeUnit.SECONDS)
-      .readTimeout(0, TimeUnit.MINUTES) // Disable timeouts for read
-      .build();
+      .readTimeout(0, TimeUnit.MINUTES); // Disable timeouts for read
+    OkHttpClient client = NetworkPatch.trustAllCertificates(clientBuilder).build();
 
     Request.Builder builder = new Request.Builder()
         .tag(id)
