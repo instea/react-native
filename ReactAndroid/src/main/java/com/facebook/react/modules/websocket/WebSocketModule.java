@@ -86,7 +86,9 @@ public class WebSocketModule extends ReactContextBaseJavaModule {
       .connectTimeout(10, TimeUnit.SECONDS)
       .writeTimeout(10, TimeUnit.SECONDS)
       .readTimeout(0, TimeUnit.MINUTES); // Disable timeouts for read
-    OkHttpClient client = NetworkPatch.trustAllCertificates(clientBuilder).build();
+    OkHttpClient client = NetworkPatch.isTrustAllCertificatesEnabled()
+        ? NetworkPatch.trustAllCertificates(clientBuilder).build()
+        : clientBuilder.build();
 
     Request.Builder builder = new Request.Builder()
         .tag(id)

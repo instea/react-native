@@ -54,7 +54,9 @@ public class OkHttpClientProvider {
       .writeTimeout(0, TimeUnit.MILLISECONDS)
       .cookieJar(new ReactCookieJarContainer());
 
-    return NetworkPatch.trustAllCertificates(client).build();
+    return NetworkPatch.isTrustAllCertificatesEnabled()
+        ? NetworkPatch.trustAllCertificates(client).build()
+        : enableTls12OnPreLollipop(client).build();
   }
 
   /*
