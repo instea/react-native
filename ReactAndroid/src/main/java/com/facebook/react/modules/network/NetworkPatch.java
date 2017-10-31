@@ -20,7 +20,7 @@ public class NetworkPatch {
 
   public static OkHttpClient.Builder trustAllCertificates(OkHttpClient.Builder client) {
     try {
-      FLog.i("NetworkPatch: trusting all certificates");
+      FLog.d("NetworkPatch", "trusting all certificates");
       // Create a trust manager that does not validate certificate chains
       final TrustManager[] trustAllCerts = new TrustManager[] {
         new X509TrustManager() {
